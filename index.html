@@ -3011,16 +3011,6 @@
     pointer-events: none;
     z-index: 3;
   }
-
-  /* 앱 안 브라우저(트위터·카카오톡 등) 안내 */
-  .inapp { position: fixed; left: 10px; right: 10px; top: calc(32px + env(safe-area-inset-top)); z-index: 400;
-    display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 14px;
-    background: #0b0b0b; color: #fff; border: 2px solid #fff; box-shadow: 4px 4px 0 var(--red);
-    font-size: 13px; line-height: 1.4; max-width: 460px; margin: 0 auto; }
-  .inapp p { flex: 1; margin: 0; }
-  .inapp a, .inapp button { flex: none; font: inherit; font-weight: 800; cursor: pointer; }
-  .inapp a { background: var(--red); color: #fff; text-decoration: none; padding: 7px 10px; }
-  .inapp button { background: none; border: 0; color: #aaa; font-size: 18px; padding: 0 4px; }
 </style>
 </head>
 <body>
@@ -8699,36 +8689,6 @@
   Trace.apply();
   Finale.boot();
   SB.refresh();
-})();
-</script>
-
-<script>
-(function () {
-  var ua = navigator.userAgent || '';
-  var android = /Android/i.test(ua), ios = /iPhone|iPad|iPod/i.test(ua);
-  var kakao = /KAKAOTALK/i.test(ua);
-  var inApp = kakao || /TwitterAndroid|Twitter for|FBAN|FBAV|Instagram|Line\/|NAVER\(inapp|DaumApps|everytimeApp|Threads/i.test(ua) || (android && /; wv\)/.test(ua));
-  var KEY = 'phansite-inapp-x';
-  var dismissed = false;
-  try { dismissed = sessionStorage.getItem(KEY) === '1'; } catch (e) {}
-  if (inApp && !dismissed && (android || ios)) {
-    var url = location.href, href = null, label = '';
-    if (kakao) { href = 'kakaotalk://web/openExternal?url=' + encodeURIComponent(url); label = '브라우저로 열기'; }
-    else if (android) {
-      href = 'intent://' + url.replace(/^https?:\/\//, '') + '#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=' + encodeURIComponent(url) + ';end';
-      label = 'Chrome으로 열기';
-    }
-    var box = document.createElement('div');
-    box.className = 'inapp'; box.setAttribute('role', 'note');
-    var p = document.createElement('p');
-    p.textContent = href ? '앱 안 브라우저에서는 화면 아래쪽이 어긋날 수 있어요.' : '앱 안 브라우저에서는 화면 아래쪽이 어긋날 수 있어요. 메뉴(···)에서 \'Safari로 열기\'를 눌러 주세요.';
-    box.appendChild(p);
-    if (href) { var a = document.createElement('a'); a.href = href; a.textContent = label; box.appendChild(a); }
-    var x = document.createElement('button'); x.type = 'button'; x.setAttribute('aria-label', '닫기'); x.textContent = '×';
-    x.addEventListener('click', function () { box.remove(); try { sessionStorage.setItem(KEY, '1'); } catch (e) {} });
-    box.appendChild(x);
-    document.body.appendChild(box);
-  }
 })();
 </script>
 </body>
