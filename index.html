@@ -5705,6 +5705,11 @@
      ════════════════════════════════════════════════════════════ */
   CHATS['af'] = { who: 'unknown', free: true, day: '6월 3일 (토) · 밤', md: '6/3', kd: '토', notify: '들어갔어?', steps: [] };
   var AFTER_OPEN = '들어갔어?';
+  // '들어갔어?' 바로 다음 문자 (follow 는 하나 또는 여러 개 — 먼저 맞는 것)
+  var AFTER_OPEN_FOLLOW = [
+    { k: ['너는', '넌?', '넌 ', '너도', '아케치는', '잘 들어갔', '들어갔어?', '들어갔냐', '도착했어?'], r: ['방금 들어왔어.'] },
+    { k: ['피곤', '졸려', '힘들', '지쳤', '지친다'], r: ['오늘 많이 걸었으니까.', '일찍 자.'] }
+  ];
   var AFTER_SPAM = [   // 연달아 보냈을 때
     ['도배하지 마.', '나도 할 일 있어.'],
     ['한 번에 하나씩 보내.', '바쁘다고.'],
@@ -5718,7 +5723,7 @@
     { id: 'wow', re: /^(헐|헉|대박|와|우와|오|오오)[.!~ㅋ]*$/, r: [['뭐가.']] },
     { id: 'goro', re: /^(아케치)?고로(야|군|씨|짱|님)?[.!?~！？]*$/, stay: true, r: [['뭐야? 왜 갑자기 이름으로 불러?'], ['허락한 적 없거든.'], ['한 번만 더 부르면 차단할 거야.'], ['마음대로 해.'], ['왜.']] },
     { id: 'qmark', re: /^[?？!！]+$/, r: [['물음표는 대답이 아니야.'], ['하고 싶은 말을 써.']] },
-    { id: 'playfulCat', re: /^(냐|냥|야옹|냐옹)[.!?~]*$/, r: [['폰 주인 바뀌었어?']], follow: { k: ['나야', '렌이야', '내가', '안 바뀌', '아니', '장난'], r: ['그 고양이한테 배운 거야?'] } },
+    { id: 'playfulCat', re: /^(냐|냥|야옹|냐옹|냥냥|먀|먕)+[.!?~]*$/, stay: true, r: [['폰 주인 바뀌었어?'], []], followAt: [0], follow: { k: ['나야', '렌이야', '내가', '안 바뀌', '아니', '장난'], r: ['그 고양이한테 배운 거야?'] } },
     { id: 'heartEm', re: /^(♡|♥|❤|🖤|💕|💖|💘|💗|💓|💞|💜|💙|💚|🧡|🤍|\uFE0F|<3)+$/u, r: [['기호 잘못 누른 거지?'], ['악취미네.'], []] }
   ];
   /* k: 이 말이 들어 있으면 / r: 답 묶음 (보낼 때마다 다음 묶음, 끝까지 쓰면 처음부터)
@@ -5830,7 +5835,13 @@
     { id: 'gang', k: ['류지', '후타바', '마코토', '유스케', '하루한테', '하루랑', '하루 선배', '스미레', '괴도단', '다들', '친구들', '단톡', '타카마키', '요시자와', '카스미'], r: [['그쪽엔 아직 말하지 마.'], ['말할 때가 되면 네가 해.']] },
     { id: 'birthdayGift', k: ['생일 선물', '생일선물', '늦었지만 축하', '늦었지만 생일', '케이크 사 줄', '케이크 사줄', '케이크 사 갈'], r: [['하루 지났다고 못 받는 건 아니야.'], ['물건은 됐어.', '다음에 올 때 시간이나 비워 둬.']],
       followAt: [0], follow: { k: ['뭐 갖고', '뭐 받고', '원하는', '뭘 줄', '뭐 줄'], r: ['그럼 네가 골라.'] } },
-    { id: 'birthday', k: ['생일', '생축', '생신', '해피 버스데이', 'happy birthday', 'Happy birthday'], r: [['어제였어. 어떻게 알았어?']] },
+    { id: 'birthday', k: ['생일', '생축', '생신', '해피 버스데이', 'happy birthday', 'Happy birthday'], r: [['어제였는데. 어떻게 알았어?']],
+      follow: [
+        { k: ['기억', '당연', '알지', '잊을', '외웠', '잊어버'], r: ['그런 걸 왜 기억하고 있어.'] },
+        { k: ['검색', '찾아봤', '찾아 봤', '방송', '프로필', '위키', '인터넷', '기사', '잡지'], r: ['방송국 프로필이 아직 남아 있나 보네.', '지워 달라고 해야겠어.'] },
+        { k: ['후타바', '류지', '모나', '모르가나', '들었'], r: ['그 녀석들, 쓸데없는 것까지 알고 있네.'] },
+        { k: ['축하', '생축', '선물', '케이크', '늦었'], r: ['하루 늦었어.', '그래도 받아 둘게.'] }
+      ] },
     { id: 'where', k: ['어디 살', '집이 어디', '어디야', '지금 어디', '어디 있어'], r: [['집. 주소는 안 알려 줘.']],
       follow: { k: ['알려', '놀러', '갈래', '가도 돼', '치사', '어딘데', '궁금', '왜 안'], r: ['알려 주면 밤이고 낮이고 불쑥 찾아올 거잖아.'] } },
     { id: 'aquarium', k: ['수족관', '아쿠아리움'], r: [['이번엔 물고기만 보고 올 수 있겠지.'], ['가겠다면 평일로 해. 사람 많은 날은 질색이니까.']],
@@ -5945,7 +5956,89 @@
   //   30일: 후타바 연락 뒤 — 후타바가 먼저 토요일 모임 얘기를 꺼내고, 저녁에 마코토가 시간을 정함
   var GROUP_AT = { 27: '5', 30: function () { var b = IM.base30(); return b === 'refuse' ? 'a30' : b === 'skip' ? 'never' : 'f30'; } };
   function groupAt(d) { var g = GROUP_AT[d]; return typeof g === 'function' ? g() : g; }
-  var CHAT_ORDER = ['1', '2', '3', '4', '5', '6', '7', '8', 'a30', 'f30', 's27', 's28', 's29', 's30', 'q30', 'e603a', 'q603', 'e603', 'af', 'g0320', 'g0429', 'g26', 'g27', 'g28', 'g29', 'g30'];
+
+  /* ════════════════════════════════════════════════════════════
+     후타바에게 [번호 물어보기] (5/28~5/30, 그날 ???의 연락을 다 읽은 뒤 하루 한 번)
+     몇 번째 부탁인지에 따라 tr1 → tr2 → tr3. 후타바는 더 파면 알 수 있지만 일부러 보지 않음
+     ════════════════════════════════════════════════════════════ */
+  function TRQ(a, b, first) { return { choices: [{ msg: a, reply: first.slice() }, { msg: b, reply: first.slice() }] }; }
+  CHATS['tr1'] = { who: 'futaba', free: true, day: '', md: '', kd: '', notify: '어디 보자', steps: [
+    TRQ('이 번호 좀 봐 줄 수 있어?', '이 번호, 누군지 알아볼 수 있어?', ['어디 보자']),
+    { wait: 1800 },
+    '선불 유심이네. 가입자 정보는 백지고',
+    '해외 서버까지 거쳐서 보냈어. 발신지 안 찍히게',
+    '이렇게 꼼꼼하게 숨는 사람, 흔하진 않은데',
+    '통신사 쪽 로그까지 더 볼게'
+  ]};
+  CHATS['tr2'] = { who: 'futaba', free: true, day: '', md: '', kd: '', notify: '아 그거', steps: [
+    TRQ('그 번호, 뭐 나왔어?', '그 번호 어떻게 됐어?', ['아 그거']),
+    '통신사 기록 열어 보긴 했는데',
+    '문자 올 때마다 경유하는 기지국이 바뀌어. 기록도 바로 지워지고',
+    { wait: 1400 },
+    '더 파면 나오긴 할 거야',
+    '근데 이 정도로 숨는 건, 찾지 말아 달라는 거잖아',
+    '렌, 너 이 상대가 누군지 알고 연락하는 거 맞지?',
+    { choices: [
+      { msg: '짐작은 가.', reply: ['알았어. 믿을게', '그럼 나는 여기까지만 볼게'] },
+      { msg: '나도 잘 모르겠어.', reply: ['그게 제일 불안한 대답이거든?'] },
+      { msg: '...', reply: ['ㅇㅋ 더 안 캐물을게'] }
+    ]}
+  ]};
+  CHATS['tr3'] = { who: 'futaba', free: true, day: '', md: '', kd: '', notify: '그 번호?', steps: [
+    TRQ('그 번호, 더 알아낸 거 있어?', '그 번호 말인데.', ['그 번호?']),
+    '더는 안 볼래',
+    '못 뚫어서가 아니라, 안 뚫는 거야',
+    { wait: 1600 },
+    '근데 하나는 알겠더라',
+    '누군지는 몰라도, 네가 기다리는 사람이지?',
+    '문자 올 때마다 폰이 켜져 있는 시간이 길어져 있더라고',
+    { choices: [
+      { msg: '응.', reply: ['그럼 됐어', '단독 행동 금지인 건 잊지 말고'] },
+      { msg: '아니.', reply: ['로그는 거짓말 안 하거든'] },
+      { msg: '...', reply: ['대답 안 해도 로그가 말해 줌ㅋ'] }
+    ]}
+  ]};
+  /* 엔딩별 후일담: 엔딩을 본 뒤 사이트로 돌아오면 한 번 (진엔딩은 아케치와 문자를 나눈 뒤) */
+  CHATS['ep1'] = { who: 'futaba', day: '6월 3일 (토) · 밤', md: '6/3', kd: '토', notify: '렌', clock: '21:40', steps: [
+    '렌',
+    '오늘 오전에 네 폰 위치, 키치조지에 찍혔더라',
+    '아 걱정 마. 류지한텐 말 안 했어',
+    { choices: [
+      { msg: '고마워.', reply: ['고마우면 언젠가 다 얘기해 줘'] },
+      { msg: '아무 일도 없었어.', reply: ['ㅇㅋ 그렇게 들어 둘게'] },
+      { msg: '...', reply: ['묵비권 또 나왔네'] }
+    ]}
+  ]};
+  CHATS['ep2'] = { who: 'ryuji', day: '6월 3일 (토) · 밤', md: '6/3', kd: '토', notify: '오늘 르블랑 재밌었다ㅋㅋ', clock: '22:10', steps: [
+    '오늘 르블랑 재밌었다ㅋㅋ',
+    '유스케 또 스케치북 들고 와서 마스터한테 혼남',
+    '너도 다음엔 꼭 와라',
+    '그러고 보니 요즘 그 게시판 안 들어가게 되더라. 뭐 그게 맞는 거겠지',
+    { choices: [
+      { msg: '다음엔 갈게.', reply: ['약속했다!'] },
+      { msg: '...', reply: ['또 읽씹ㅋㅋ 잘 자라'] }
+    ]}
+  ]};
+  CHATS['ep3'] = { who: 'futaba', day: '5월 31일 (수) · 밤', md: '5/31', kd: '수', notify: '렌', clock: '23:40', steps: [
+    '렌',
+    '요즘은 밤에 그 사이트 안 들어가네',
+    { wait: 1800 },
+    '아니다. 됐어',
+    '잘 자'
+  ]};
+  CHATS['ept'] = { who: 'futaba', day: '6월 4일 (일) · 오후', md: '6/4', kd: '일', notify: '렌. 그 번호 말인데', steps: [
+    '렌. 그 번호 말인데',
+    '오늘부터 우회 없이 그냥 잡혀. 도쿄 기지국에',
+    '이제 숨을 생각이 없나 봐',
+    { wait: 1400 },
+    '이름은 안 봤어. 보려면 볼 수 있는데',
+    { choices: [
+      { msg: '알아.', reply: ['역시 너 뭐 알고 있었구나', '언젠가 나한테도 말해 줘'] },
+      { msg: '그래?', reply: ['그래?가 아니라고 이 리더야'] },
+      { msg: '...', reply: ['ㅇㅋ 기다릴게'] }
+    ]}
+  ]};
+  var CHAT_ORDER = ['1', '2', '3', '4', '5', '6', '7', '8', 'a30', 'f30', 's27', 's28', 's29', 's30', 'q30', 'e603a', 'q603', 'e603', 'af', 'tr1', 'tr2', 'tr3', 'ep1', 'ep2', 'ep3', 'ept', 'g0320', 'g0429', 'g26', 'g27', 'g28', 'g29', 'g30'];
   // 시간대가 바뀌어 연락이 올 때 잠금화면에 뜨는 시각 (30일 대화는 setup30 에서)
   CHATS['2'].clock = '12:47'; CHATS['3'].clock = '22:13';
   CHATS['4'].clock = '07:52'; CHATS['5'].clock = '13:26'; CHATS['6'].clock = '22:58';
@@ -6322,7 +6415,8 @@
     if (!Array.isArray(st.af)) st.af = [];
     st.af = st.af.filter(function (x) { return x && typeof x.m === 'string' && Array.isArray(x.r); });
     if (!st.afN || typeof st.afN !== 'object' || Array.isArray(st.afN)) st.afN = {};
-    if (!st.afF || !Array.isArray(st.afF.k) || !Array.isArray(st.afF.r)) st.afF = null;   // 바로 다음 문자에 이어질 답
+    function okFollow(f) { return !!f && Array.isArray(f.k) && Array.isArray(f.r); }
+    if (!(Array.isArray(st.afF) ? st.afF.length && st.afF.every(okFollow) : okFollow(st.afF))) st.afF = null;   // 바로 다음 문자에 이어질 답
     function setupAfter() {
       CHATS['af'].steps = [AFTER_OPEN].concat(st.af.map(function (x) { return { choices: [{ msg: x.m, reply: x.r }] }; }));
       st.picks['af'] = st.af.map(function () { return 0; });
@@ -6333,8 +6427,9 @@
       var sq = squash(text).toLowerCase(), prev = st.af.length ? squash(st.af[st.af.length - 1].m).toLowerCase() : null;
       var follow = st.afF; st.afF = null;
       // 바로 앞 답에 이어지는 말 (서류 → 무슨 내용인데? / 체스 → 같이 두자)
-      if (follow && hasAny(text, follow.k)) return follow.r.slice();
-      if (prev !== null && sq.length >= 4 && sq === prev && !hasAny(text, ['고로'])) return AFTER_SAME.slice();   // 짧은 말·이름 부르기는 반복해도 됨
+      var fhit = follow && (Array.isArray(follow) ? follow : [follow]).filter(function (f) { return hasAny(text, f.k); })[0];
+      if (fhit) return fhit.r.slice();
+      if (prev !== null && sq.length >= 4 && sq === prev && !hasAny(text, ['고로']) && !/^(냐|냥|야옹|냐옹|먀|먕)+$/.test(sq)) return AFTER_SAME.slice();   // 짧은 말·이름 부르기는 반복해도 됨
       if (/^[ㄱ-ㅎㅏ-ㅣ]{4,}$/.test(sq) && !/^[ㅋㅎㅠㅜㄷ]+$/.test(sq) || /asdf|qwer|zxcv|sdfg|hjkl/.test(sq)) return AFTER_MASH.slice();
       if (text.length > 80) return AFTER_LONG.slice();
       var ex = AFTER_EXACT.filter(function (x) { return x.re.test(text.replace(/\s+/g, '')); })[0];
@@ -6398,12 +6493,14 @@
       saveContact();
       Clock.set('23:14');
       setupAfter();
+      st.afF = AFTER_OPEN_FOLLOW;
       unlock('af', true);
       showNoti('af');
       SFX.chime();
     }
     setupAfter();
     if (afterMode() && st.unlocked.indexOf('af') < 0) setTimeout(afterStart, 3500);
+    else if (afterMode() && !st.af.length && !st.afF) st.afF = AFTER_OPEN_FOLLOW;   // 아직 답장 전
     // [의뢰에 관해 묻기]: 수락 갈래의 30일 밤(필수 대화를 마친 뒤) 또는 6/3 장소 안내 뒤 (도착 문자 전) — 한 번만
     function asked() { return isDone('q30') || isDone('q603'); }                  // 마지막 답장까지 읽어야 완료
     function asking() { return ['q30', 'q603'].some(function (c) { return st.unlocked.indexOf(c) > -1 && !chatDone(c); }); }
@@ -6421,6 +6518,43 @@
       SFX.blip();
       build();
     }
+    // [번호 물어보기]: 후타바 대화방에서, 그날 ???의 연락을 다 읽은 뒤 하루 한 번 (5/28~5/30)
+    if (!st.trDay || typeof st.trDay !== 'object' || Array.isArray(st.trDay)) st.trDay = {};
+    ['tr1', 'tr2', 'tr3'].forEach(function (c) {
+      var d = st.trDay[c];
+      if (d && typeof d.day === 'string' && typeof d.md === 'string' && typeof d.kd === 'string') { CHATS[c].day = d.day; CHATS[c].md = d.md; CHATS[c].kd = d.kd; }
+    });
+    function traceTrigger(d) { return d === 28 ? '8' : d === 29 ? any29() : d === 30 && CHATS['a30'].steps.length ? 'a30' : null; }
+    function traceCid() {
+      if (endingSeen() || finaleStage() || DAY < 28 || DAY > 30) return '';
+      var ids = ['tr1', 'tr2', 'tr3'], md = '5/' + DAY;
+      if (ids.some(function (c) { return st.unlocked.indexOf(c) > -1 && st.trDay[c] && st.trDay[c].md === md; })) return '';
+      var next = ids.filter(function (c) { return st.unlocked.indexOf(c) < 0; })[0], t = traceTrigger(DAY);
+      return next && t && isDone(t) ? next : '';
+    }
+    function startTrace() {
+      var c = traceCid();
+      if (!c) return;
+      var di = dayOf(traceTrigger(DAY));
+      st.trDay[c] = { day: di.day, md: di.md, kd: di.kd };
+      CHATS[c].day = di.day; CHATS[c].md = di.md; CHATS[c].kd = di.kd;
+      unlock(c, true);
+      SFX.blip();
+      build();
+    }
+    // 엔딩별 후일담: 엔딩을 본 뒤 한 번 (진엔딩은 아케치와 문자를 한 번 이상 나눈 뒤)
+    var EPI = { accept: 'ep1', refuse: 'ep2', skip: 'ep3', 'true': 'ept' };
+    function epiCheck() {
+      var e = endingSeen(), c = e && own(EPI, e) ? EPI[e] : '';
+      if (!c || st.unlocked.indexOf(c) > -1) return;
+      if (e === 'true' && !(st.unlocked.indexOf('af') > -1 && st.af.length)) return;
+      if (document.querySelector('.finale')) { setTimeout(epiCheck, 3000); return; }
+      if (e !== 'true' && CHATS[c].clock) Clock.set(CHATS[c].clock);
+      unlock(c, true);
+      showNoti(c);
+      SFX.chime();
+    }
+    setTimeout(epiCheck, 5000);
     function startSend() {
       if (!canSend()) return;
       setupSend(DAY);
@@ -6525,7 +6659,7 @@
         '<div class="im-foot"><div class="im-choices" hidden></div>' +
           '<button type="button" class="im-tap"><span class="ic">○</span><span class="lbl">다음</span></button>' +
           '<form class="im-compose" hidden autocomplete="off"><textarea rows="1" maxlength="200" placeholder="메시지 보내기" aria-label="아케치에게 보낼 메시지" enterkeyhint="send"></textarea><button type="submit">보내기</button></form>' +
-          '<div class="im-extra"><button type="button" class="im-ask" hidden>의뢰에 관해 묻기</button><button type="button" class="im-send" hidden>먼저 보내기</button></div></div>' +
+          '<div class="im-extra"><button type="button" class="im-ask" hidden>의뢰에 관해 묻기</button><button type="button" class="im-send" hidden>먼저 보내기</button><button type="button" class="im-send im-trace" hidden>번호 물어보기</button></div></div>' +
       '</div>';
     document.body.appendChild(root);
 
@@ -6542,6 +6676,8 @@
     var tapBtn = root.querySelector('.im-tap');
     var sendBtn = root.querySelector('.im-send');
     sendBtn.addEventListener('click', function () { startSend(); });
+    var traceBtn = root.querySelector('.im-trace');
+    traceBtn.addEventListener('click', function () { startTrace(); });
     var compose = root.querySelector('.im-compose'), composeTa = compose.querySelector('textarea');
     compose.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -6742,6 +6878,7 @@
       chBox.hidden = true; chBox.innerHTML = '';
       sendBtn.hidden = !(mode === 'end' && curWho === 'unknown' && canSend());
       askBtn.hidden = !(mode === 'end' && curWho === 'unknown' && !!askCid());
+      traceBtn.hidden = !(mode === 'end' && curWho === 'futaba' && !!traceCid());
       askBtn.parentNode.parentNode.classList.toggle('has-ask', !askBtn.hidden && !sendBtn.hidden);   // 버튼 두 개가 쌓일 자리
       compose.hidden = !(mode !== 'choice' && curWho === 'unknown' && afterMode() && (mode === 'end' || st.unlocked.indexOf('af') > -1 && !queue.some(function (q) { return q.cid && q.cid !== 'af'; })));
       if (mode === 'end') maybeTyping();
@@ -6933,7 +7070,7 @@
       refreshFab();
       if (returnFocus && returnFocus.isConnected && returnFocus.getClientRects().length) returnFocus.focus({ preventScroll: true });
       if (warpReady()) { if (noWarp !== true) setTimeout(function () { Night.play(); }, 260); }   // 휴대폰을 내려놓음 → 그날 저녁 독백 → 날짜 넘김
-      else checkAfter();
+      else { checkAfter(); setTimeout(epiCheck, 1500); }
       if (typeof Bed !== 'undefined') Bed.onImClose();
     }
     function pickWho() {
@@ -7184,7 +7321,7 @@
                preview: latest ? lastText(latest) : '' };
     }
     return { onDialog: onDialog, boot: boot, open: open, close: close, test: test, info: info, back: back, isOpen: function () { return isOpen; },
-             asked: asked, asking: asking, afterStart: afterStart, saveContact: saveContact, warpReady: warpReady, prepWarp: prepWarp, prepDay26: prepDay26, prepDone: prepDone, isDone: isDone, chosen: chosen, has: has, quoteOf: quoteOf,
+             asked: asked, asking: asking, afterStart: afterStart, epiCheck: epiCheck, saveContact: saveContact, warpReady: warpReady, prepWarp: prepWarp, prepDay26: prepDay26, prepDone: prepDone, isDone: isDone, chosen: chosen, has: has, quoteOf: quoteOf,
              unlock: unlock, pickOf: pickOf, onComment: onComment, skip29: skip29, any29: any29, KEY: KEY_IM,
              base30: base30, ending30: ending30, last30: last30, start30: start30, prep29: prep29,
              dayStart: dayStart, latestClock: latestClock, nextSkip: nextSkip, clockOf: clockOf };
@@ -8341,6 +8478,7 @@
           el.remove(); el = null;
           navigate(act === 'phone' ? MAIN : 'me');
           if (id === 'true') setTimeout(function () { IM.afterStart(); }, act === 'phone' ? 1600 : 3500);   // 진엔딩: 잠시 뒤 아케치에게서 문자
+          else setTimeout(function () { IM.epiCheck(); }, 4000);   // 다른 엔딩: 잠시 뒤 후일담 문자
           if (act !== 'phone') setTimeout(function () { var d = viewOther.querySelector('details.log'); if (d) { d.open = true; d.scrollIntoView({ block: 'start', behavior: 'smooth' }); } }, 300);
           SB.refresh(); Down.refresh();
         }, 500);
