@@ -4885,7 +4885,7 @@
     var days = [];
     if (IM.has('1')) days.push(['5/25 (목)', ev('수선집 사장님의 [찾습니다] 글을 읽었다.') + ev('류지에게서 연락이 왔다.') + say('류지', '1', 2)]);
     if (DAY >= 26) days.push(['5/26 (금)', ev('글이 [해결]로 바뀌었다. 코트는 어제 저녁 "지인"이 찾아갔다고 한다.') + say('류지', '2', 1) + (IM.has('3') ? ev('후타바가 서버 기록을 봤다고 했다.') : '') + say('후타바', '3', 1)]);
-    if (DAY >= 27) days.push(['5/27 (토)', ev('새벽 03:14, 코트 글에 댓글 하나가 달렸다 지워졌다.') + (Dawn.restored() ? ev('지워진 댓글을 복원했다.') : '') + (IM.has('6') ? ev('저장되지 않은 상대에게서 연락이 왔다.') : '') + say('???', '6', 1)]);
+    if (DAY >= 27) days.push(['5/27 (토)', ev('새벽 03:14, 코트 글에 댓글 하나가 달렸다 지워졌다.') + (Dawn.restored() ? ev('지워진 댓글을 복원했다.') : '') + (IM.has('y27') ? ev('유스케가 문 닫은 수선집 앞에 서 있던 남자 이야기를 했다.') : '') + say('유스케', 'y27', 0) + (IM.has('6') ? ev('저장되지 않은 상대에게서 연락이 왔다.') : '') + say('???', '6', 1)]);
     if (DAY >= 28) days.push(['5/28 (일)', ev('류지는 이제 다 끝난 것 같다고 했다.') + (IM.has('8') ? ev('???가 내일 아침 게시판에 들어가 보라고 했다.') : '') + say('???', '8', 1)]);
     if (DAY >= 29) {
       var ans = null;
@@ -5446,6 +5446,32 @@
         { msg: '...',
           reply: ['알았어. 안 물을게', '대신', '네 폰에 예전에 깔아둔 그 앱, 아직 안 지웠거든', '무슨 일 있으면 바로 알 수 있게.'] }
       ]}
+    ]
+  };
+  // 5/27 저녁: 유스케 — 화방에서 돌아오는 길, 문 닫은 수선집 앞의 남자 (이 대화를 읽은 뒤 밤에 ???의 연락)
+  CHATS['y27'] = {
+    who: 'yusuke', after: '5', afterDelay: 7000, noLock: true,   // 휴대폰을 내려놓지 않아도 사이트 알림으로 옴
+    day: '5월 27일 (토) · 저녁', md: '5/27', kd: '토', clock: '18:40',
+    notify: '렌, 잠깐 감상 좀 들어 주겠나.',
+    steps: [
+      '렌, 잠깐 감상 좀 들어 주겠나.',
+      '아까 신주쿠 화방에서 붓을 사고 돌아오는 길에, 남쪽 골목 어귀를 지나왔거든.',
+      '문을 닫은 작은 수선집 앞에 한 남자가 서 있더군.',
+      '이전 준비로 반쯤 비어 있는 쇼윈도를 한참이나 들여다보고 있길래, 무심코 발걸음을 멈췄다.',
+      { choices: [
+        { msg: '어떤 사람이었는데?',
+          reply: ['모자를 깊게 눌러써서 얼굴은 보지 못했다.', '다만 왼손에 휴대폰을 쥔 채, 다른 쪽 손은 주머니에 넣고 미동도 하지 않더군.'] },
+        { msg: '또 길 한복판에서 스케치한 거야?',
+          reply: ['하하, 꺼내려다 참았다.', '이상하게도 스케치북을 꺼내는 게 방해처럼 느껴지더군.'] },
+        { msg: '...',
+          reply: ['기묘한 구도였어.'] }
+      ]},
+      '문은 닫혀 있는데, 이상하게도 헛걸음한 사람처럼 보이지는 않았어.',
+      '문득 지난 3월, 도쿄역에서 그렸던 네 뒷모습이 떠오르더군.',
+      '…아, 신경 쓰게 했다면 미안하다. 그냥 갑자기 네 생각이 나서 연락해 봤어.',
+      '그보다 붓값이 예상보다 비쌌다.',
+      '이번 주 식단은 숙주나물로 정해졌어.',
+      '다음에 도쿄에 오면, 도쿄역에서 그린 스케치를 보여 주지. 또 연락하마.'
     ]
   };
   // 5/27 밤: 후타바와의 대화(복구했냐)를 끝내고 잠시 뒤, 저장되지 않은 상대 '???'에게서 연락
@@ -6038,7 +6064,7 @@
       { msg: '...', reply: ['ㅇㅋ 기다릴게'] }
     ]}
   ]};
-  var CHAT_ORDER = ['1', '2', '3', '4', '5', '6', '7', '8', 'a30', 'f30', 's27', 's28', 's29', 's30', 'q30', 'e603a', 'q603', 'e603', 'af', 'tr1', 'tr2', 'tr3', 'ep1', 'ep2', 'ep3', 'ept', 'g0320', 'g0429', 'g26', 'g27', 'g28', 'g29', 'g30'];
+  var CHAT_ORDER = ['1', '2', '3', '4', '5', 'y27', '6', '7', '8', 'a30', 'f30', 's27', 's28', 's29', 's30', 'q30', 'e603a', 'q603', 'e603', 'af', 'tr1', 'tr2', 'tr3', 'ep1', 'ep2', 'ep3', 'ept', 'g0320', 'g0429', 'g26', 'g27', 'g28', 'g29', 'g30'];
   // 시간대가 바뀌어 연락이 올 때 잠금화면에 뜨는 시각 (30일 대화는 setup30 에서)
   CHATS['2'].clock = '12:47'; CHATS['3'].clock = '22:13';
   CHATS['4'].clock = '07:52'; CHATS['5'].clock = '13:26'; CHATS['6'].clock = '22:58';
@@ -6532,6 +6558,14 @@
       var next = ids.filter(function (c) { return st.unlocked.indexOf(c) < 0; })[0], t = traceTrigger(DAY);
       return next && t && isDone(t) ? next : '';
     }
+    var TRACE_HINT = { tr1: '(이 번호, 후타바한테 알아봐 달라고 할까?)', tr2: '(후타바한테 그 번호 어떻게 됐는지 물어볼까.)', tr3: '(후타바, 그 번호 더 알아냈으려나.)' };
+    if (!st.trHint || typeof st.trHint !== 'object' || Array.isArray(st.trHint)) st.trHint = {};
+    function traceHint() {
+      var c = traceCid();
+      if (!c || st.trHint[DAY]) return;
+      st.trHint[DAY] = 1; persist();
+      setTimeout(function () { toast(TRACE_HINT[c], 3400); }, 1400);
+    }
     function startTrace() {
       var c = traceCid();
       if (!c) return;
@@ -6639,6 +6673,7 @@
     }
     // 대화 상대 (CHATS 의 who). 인물을 더 늘릴 땐 여기에 추가
     var PEOPLE = { ryuji: { name: '류지', pic: 'ryuji-pic' }, futaba: { name: '후타바', pic: 'futaba-pic' },
+                   yusuke: { name: '유스케', pic: 'yusuke-pic' },
                    unknown: { name: '???', pic: 'unknown-pic' },   // 저장되지 않은 상대
                    group: { name: '괴도단', pic: 'group-pic', muted: true } };   // 단톡방 (알림 꺼 둠)
     saveContact();   // 진엔딩 뒤엔 '아케치'
@@ -6774,7 +6809,7 @@
       persist(); refreshFab();
     }
     function prepDone(list) {
-      var P = { '1': [0, 0, 2], '2': [0, 0, 0], '3': [0, 0], '4': [0], '5': [0], '6': [0, 0], '7': [0], '8': [0, 0] };
+      var P = { '1': [0, 0, 2], '2': [0, 0, 0], '3': [0, 0], '4': [0], '5': [0], 'y27': [0], '6': [0, 0], '7': [0], '8': [0, 0] };
       st.unlocked = list.slice(); st.quotes = {}; st.days = {}; st.lines29 = {};
       CHAT_ORDER.forEach(function (c) { st.picks[c] = []; st.shown[c] = 0; });
       list.forEach(function (c) { st.picks[c] = (P[c] || []).slice(); st.shown[c] = flatten(c).msgs.length; });
@@ -6803,6 +6838,9 @@
     function has(cid) { return st.unlocked.indexOf(cid) > -1; }
     function quoteOf(cid) { return st.quotes[cid] ? st.quotes[cid].t : null; }
     function isDone(cid) { return st.unlocked.indexOf(cid) > -1 && chatDone(cid); }
+    // 5/27 유스케: 그날에만 (이미 ???의 첫 연락을 받은 기록엔 끼어들지 않음) → ???의 첫 연락은 유스케 대화를 읽은 뒤
+    CHATS['y27'].gate = function () { return DAY === 27 && st.unlocked.indexOf('6') < 0; };
+    CHATS['6'].gate = function () { return !CHATS['y27'].gate() || isDone('y27'); };
     // 테스트용: 5/25 류지 대화를 끝낸 상태로 맞춤 (pick = 마지막 선택 0·1·2), 26일 이후 대화는 처음으로
     function prepWarp(pick) {
       if (st.unlocked.indexOf('1') < 0) st.unlocked.push('1');
@@ -6881,7 +6919,7 @@
       traceBtn.hidden = !(mode === 'end' && curWho === 'futaba' && !!traceCid());
       askBtn.parentNode.parentNode.classList.toggle('has-ask', !askBtn.hidden && !sendBtn.hidden);   // 버튼 두 개가 쌓일 자리
       compose.hidden = !(mode !== 'choice' && curWho === 'unknown' && afterMode() && (mode === 'end' || st.unlocked.indexOf('af') > -1 && !queue.some(function (q) { return q.cid && q.cid !== 'af'; })));
-      if (mode === 'end') maybeTyping();
+      if (mode === 'end') { maybeTyping(); traceHint(); }
       tapBtn.hidden = false;
       tapBtn.disabled = mode === 'choice';
       tapBtn.style.visibility = mode === 'choice' ? 'hidden' : '';   // 선택지가 떠 있을 땐 하단 안내 숨김 (자리는 유지)
@@ -7085,8 +7123,9 @@
       CHAT_ORDER.forEach(function (cid) {
         var a = CHATS[cid].after;
         if (!a || afterTimers[cid] || st.unlocked.indexOf(cid) > -1) return;
+        if (CHATS[cid].gate && !CHATS[cid].gate()) return;
         if (st.unlocked.indexOf(a) < 0 || !chatDone(a)) return;
-        if (slotChange(cid)) return;                        // 시간대가 바뀌는 연락은 '휴대폰 내려놓기'로
+        if (slotChange(cid) && !CHATS[cid].noLock) return;   // 시간대가 바뀌는 연락은 '휴대폰 내려놓기'로 (noLock 은 그냥 알림)
         var ms = CHATS[cid].afterDelay || (delay == null ? 2500 : delay);
         afterTimers[cid] = setTimeout(function () { afterTimers[cid] = null; unlock(cid); }, ms);
       });
@@ -7121,7 +7160,7 @@
       if (w) return w;
       return CHAT_ORDER.filter(function (cid) {
         var a = CHATS[cid].after;
-        return a && st.unlocked.indexOf(cid) < 0 && st.unlocked.indexOf(a) > -1 && chatDone(a) && slotChange(cid);
+        return a && st.unlocked.indexOf(cid) < 0 && st.unlocked.indexOf(a) > -1 && chatDone(a) && slotChange(cid) && !CHATS[cid].noLock && (!CHATS[cid].gate || CHATS[cid].gate());
       })[0] || null;
     }
     // 새 날 아침: 그날 첫 연락의 시간대로 맞추고 잠금화면 시각을 돌려줌
@@ -7163,11 +7202,12 @@
       if (cid === 'a30' || cid === 'f30') setup30();
       if (cid === 'f30' && !st.f30v) st.f30v = ending30() === 'accept' ? 'accept' : 'happy';
       if (cid === '1' && st.lv1 == null) st.lv1 = level1();
-      var viaLock = !quiet && typeof Lock !== 'undefined' && !CHATS[cid].react && (Lock.isOpen() || slotChange(cid));
+      var viaLock = !quiet && typeof Lock !== 'undefined' && !CHATS[cid].react && !CHATS[cid].noLock && (Lock.isOpen() || slotChange(cid));
       // 다른 시간대의 연락은 바로 오지 않고, 렌이 휴대폰을 내려놓았다가 다시 볼 때 와 있음
       if (viaLock && !Lock.isOpen()) { if (st.waiting.indexOf(cid) < 0) { st.waiting.push(cid); persist(); } return; }
       st.waiting = st.waiting.filter(function (c) { return c !== cid; });
-      if (!CHATS[cid].react && !CHATS[cid].free) st.slot = dayOf(cid).day;
+      if (!CHATS[cid].react && !CHATS[cid].free && !CHATS[cid].noLock) st.slot = dayOf(cid).day;
+      if (CHATS[cid].noLock && CHATS[cid].clock && !quiet) Clock.set(CHATS[cid].clock);
       st.unlocked.push(cid); persist();
       if (cid === '1' || groupAt(DAY) === cid) setTimeout(ensureGroup, 4000);   // 단톡방은 조금 뒤에 조용히
       refreshFab();
@@ -8839,7 +8879,7 @@
   // /day30 = 애매한 답장(??? 가 다시 물음) · /day30a 수락 · /day30r 거절 · /day30s 지나침
   // /true = 진엔딩을 본 직후 상태로 (잠시 뒤 아케치에게서 문자)
   function dayTest(n, v, afterTrue) {
-    var done = { 26: ['1', '2', '3'], 27: ['1', '2', '3'], 28: ['1', '2', '3', '4', '5', '6'], 29: ['1', '2', '3', '4', '5', '6', '7', '8'], 30: ['1', '2', '3', '4', '5', '6', '7', '8'] }[n];
+    var done = { 26: ['1', '2', '3'], 27: ['1', '2', '3'], 28: ['1', '2', '3', '4', '5', 'y27', '6'], 29: ['1', '2', '3', '4', '5', 'y27', '6', '7', '8'], 30: ['1', '2', '3', '4', '5', 'y27', '6', '7', '8'] }[n];
     if (!done) return;
     IM.prepDone(done);
     if (n === 30) IM.prep29(v);
