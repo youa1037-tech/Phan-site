@@ -5912,7 +5912,7 @@
   ];
   /* 아케치가 먼저 보내는 문자 (진엔딩 뒤 대화를 많이 한 사람에게만, 각각 한 번)
      sent: 렌이 보낸 문자 수 / kinds: 찾아낸 반응 종류 수 / away: 마지막 문자 뒤 하루 넘게 지나 다시 들어옴
-     idle: 아케치 답을 읽고 1분 넘게 가만히 있음 / dawn: 실제 시계가 새벽 2~5시 */
+     idle: 아케치 답 뒤로 40초 동안 렌이 답하지 않음 / dawn: 실제 시계가 새벽 2~5시 */
   var AFTER_PUSH = [
     { id: 'sent100', sent: 100, r: ['이 정도면 기록이라도 세우려는 거지?'], follow: [
       { k: ['아니', '그냥', '좋아서', '좋으니까', '재밌어서'], r: ['그래. 그렇다고 해 둘게.'] },
@@ -6630,7 +6630,7 @@
     }
     function pushAfter(why) {
       if (!afterMode() || st.unlocked.indexOf('af') < 0 || !st.af.length) return;
-      if (queue.length || afT.length >= 4 || typingNow()) return;          // 답이 오는 중 · 도배 중 · 입력 중이면 미룸
+      if (queue.length || afT.length >= 4 || (why !== 'idle' && typingNow())) return;   // 답이 오는 중 · 도배 중 · 입력 중이면 미룸
       var x = AFTER_PUSH.filter(function (y) { return pushReady(y, why); })[0];
       if (!x) return;
       st.afP[x.id] = 1;
@@ -6640,15 +6640,15 @@
       if (isOpen && curWho === 'unknown' && root.classList.contains('v-chat')) { setFoot('next'); queue = rest('af', false); step(); }
       else { CHATS['af'].notify = x.r[0]; showNoti('af'); SFX.chime(); refreshFab(); }
     }
-    // 아케치의 답이 다 나온 뒤: 잠시 뒤 조건 확인, 대화방에 1분 넘게 가만히 있으면 '읽고 답이 없네'
+    // 아케치의 답이 다 나온 뒤: 잠시 뒤 조건 확인, 40초 동안 답이 없으면 '읽고 답이 없네'
     function afterIdle() {
       clearTimeout(pushT); clearTimeout(idleT);
       if (!afterMode() || curWho !== 'unknown' || !st.af.length) return;
       pushT = setTimeout(function () { pushAfter('step'); }, 5000);
       var lastE = st.af[st.af.length - 1];
       if (!st.afP.idle && !lastE.p && lastE.r.some(function (x) { return typeof x === 'string'; })) idleT = setTimeout(function () {
-        if (isOpen && curWho === 'unknown' && root.classList.contains('v-chat') && !typingNow()) pushAfter('idle');
-      }, 60000);
+        pushAfter('idle');   // 아케치의 답 뒤로 40초 동안 렌이 아무것도 안 보내면 (대화방을 나가 있어도)
+      }, 40000);
     }
     // 진엔딩을 본 뒤 (기록 화면으로 나오거나 다시 들어오면): 아케치에게서 먼저 한 줄
     function afterStart() {
