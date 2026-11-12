@@ -4890,7 +4890,7 @@
     if (IM.has('1')) days.push(['5/25 (周四)', ev('阅读了改衣店老板发的 [寻人] 帖。') + ev('收到了龙司发来的消息。') + say('龙司', '1', 2)]);
     if (DAY >= 26) days.push(['5/26 (周五)', ev('帖子变成了 [已解决]。听说大衣昨天傍晚被“朋友”取走了。') + say('龙司', '2', 1) + (IM.has('3') ? ev('双叶说她查看了服务器记录。') : '') + say('双叶', '3', 1)]);
     if (DAY >= 27) days.push(['5/27 (周六)', ev('凌晨 03:14，大衣帖下有条评论发出来后又被删掉了。') + (Dawn.restored() ? ev('恢复了被删除的评论。') : '') + (IM.has('y27') ? ev('祐介说他在关门的改衣店前看到了一个站着的男人。') : '') + say('祐介', 'y27', 0) + (IM.has('6') ? ev('收到了未保存号码发来的消息。') : '') + say('???', '6', 1)]);
-    if (DAY >= 28) days.push(['5/28 (周日)', ev('龙司说这件事看来已经彻底结束了。') + (IM.has('su28') ? ev('芳泽提起了去年冬天的事。') : '') + say('芳泽', 'su28', 0) + (IM.has('8') ? ev('???让我明天早上上论坛看看。') : '') + say('???', '8', 1)]);
+    if (DAY >= 28) days.push(['5/28 (周日)', ev('龙司说这件事看来已经彻底结束了。') + (IM.has('su28') ? ev('芳泽提起了去年冬天的事。') : '') + say('芳泽', 'su28', 0) + (IM.has('mk28') ? ev('真提到了从姐姐那里听来的暂缓处理的供述。') : '') + say('真', 'mk28', 0) + (IM.has('8') ? ev('???让我明天早上上论坛看看。') : '') + say('???', '8', 1)]);
     if (DAY >= 29) {
       var ans = null;
       REPLY29.some(function (r) { ans = IM.quoteOf('u-' + r.id); return !!ans; });
@@ -4901,7 +4901,7 @@
     }
     if (DAY >= 30) {
       days.push(['5/30 (周二)', ev(IM.base30() === 'skip' ? '那篇委托帖加上了 [撤回] 标记。' : '那篇委托帖被删掉了。') +
-        say('???', 'a30', 0) + say('双叶', 'f30', 0) + (IM.has('q30') ? ev('询问了关于那份委托的事。') : '')]);
+        say('???', 'a30', 0) + say('双叶', 'f30', 0) + (IM.has('an30') ? ev('杏让我周六一定要来。') : '') + say('杏', 'an30', 0) + (IM.has('q30') ? ev('询问了关于那份委托的事。') : '')]);
     }
     if (endingSeen() === 'accept' || endingSeen() === 'true') days.push(['6/3 (周六)', '<li class="log-item promise">约定的日子到了。</li>' + (IM.has('q603') ? ev('询问了关于那份委托的事。') : '')]);
     if (!days.length) return '';
@@ -6044,6 +6044,56 @@
       '啊，我得去做拉伸运动了。祝您度过一个愉快的周末，学长！'
     ]
   };
+  // 5/28 저녁: 마코토 — 스미레 대화를 읽은 뒤 사이트 알림으로 (이 대화까지 읽어야 밤에 ???의 연락)
+  CHATS['mk28'] = {
+    who: 'makoto', after: 'su28', afterDelay: 6000, noLock: true,
+    day: '5月28日 (周日) · 傍晚', md: '5/28', kd: '周日', clock: '19:15',
+    notify: '莲，现在方便聊两句吗？',
+    steps: [
+      '莲，现在方便聊两句吗？',
+      '刚才聚会取消后，我在家和姐姐一起吃了晚饭。',
+      '看姐姐最近神色有些复杂，我就问了她是不是发生了什么事。',
+      { wait: 1800 },
+      '说是狮童的审判虽然进展得很顺利，但前阵子有个人亲自找到检察厅作了一番供述。',
+      '对方说过去的那些事件全都是自己干的，连日期和目标都说得一清二楚。',
+      '但因为没有任何证据能把那种手法和实际案件联系起来，那边只说先核实一下，就把人打发回去了。',
+      { choices: [
+        { msg: '听说是谁去作的供述？',
+          reply: ['具体是谁姐姐也没有多透露。', '她只说对方的态度异常平静，反倒让人觉得不像是在说谎。'] },
+        { msg: '看来姐姐也很在意这件事呢。',
+          reply: ['嗯。听说在文件程序上既没法作出处分，只能暂时搁置。', '我在想那会不会和我们知道的那件事有关……总觉得有些放不下心。'] },
+        { msg: '...',
+          reply: ['……抱歉，我说了多余的话。'] }
+      ]},
+      '虽然看姐姐的样子也是打算当成偶发的小插曲翻篇，但害你跟着操心，真不好意思。',
+      '啊，话说下次聚会的时间我会重新定好发在群里的。',
+      '可能是因为下雨，气温降了不少呢。小心别感冒了，莲。'
+    ]
+  };
+  // 5/30: 안 — 그날 단톡방(토요일 3시 르블랑)이 열린 뒤 사이트 알림으로 (지나침 갈래엔 없음)
+  CHATS['an30'] = {
+    who: 'ann', after: 'g30at', afterDelay: 7000, noLock: true,
+    day: '5月30日 (周二) · 下午', md: '5/30', kd: '周二', clock: '16:40',
+    notify: '莲！看到群消息了吧？',
+    steps: [
+      '莲！看到群消息了吧？',
+      '周六你要是真能过来就好啦~',
+      '好久没大家聚在一起了，记得穿得帅气点过来哦！',
+      '啊对了，听龙司说你上周一直在到处找什么棕色大衣？',
+      { choices: [
+        { msg: '只是普通聊起衣服而已。',
+          reply: ['唔~ 很可疑哦。', '要是来问我的话，我还能帮你搭配一下呢！'] },
+        { msg: '龙司那家伙又嘴快了啊。',
+          reply: ['啊哈哈，龙司就是那样嘛！', '别太说他啦～他也是因为担心你才说的。'] },
+        { msg: '...',
+          reply: ['不准已读不回哦~ 我可全都听说了！'] }
+      ]},
+      '总之！你不会真的在6月份穿冬装大衣过来吧？',
+      '志帆不是说下个月也要来嘛，到时候要是也能见到莲就好了。',
+      '大家都很想见你，当然我也是！',
+      '啊，我要去拍摄啦！回头再联系~'
+    ]
+  };
   // 5/29 오후: 하루 — 의뢰 글 답장에 온 ???의 문자를 읽은 뒤 사이트 알림으로
   CHATS['ha29'] = {
     who: 'haru', after: 'u29', afterDelay: 4000, noLock: true,
@@ -6164,7 +6214,7 @@
       { msg: '...', reply: ['OK，我等你跟我说'] }
     ]}
   ]};
-  var CHAT_ORDER = ['1', '2', '3', '4', '5', 'y27', '6', '7', 'su28', '8', 'ha29', 'a30', 'f30', 's27', 's28', 's29', 's30', 'q30', 'e603a', 'q603', 'e603', 'af', 'tr1', 'tr2', 'tr3', 'ep1', 'ep2', 'ep3', 'ept', 'g0320', 'g0429', 'g26', 'g27', 'g28', 'g29', 'g30'];
+  var CHAT_ORDER = ['1', '2', '3', '4', '5', 'y27', '6', '7', 'su28', 'mk28', '8', 'ha29', 'a30', 'an30', 'f30', 's27', 's28', 's29', 's30', 'q30', 'e603a', 'q603', 'e603', 'af', 'tr1', 'tr2', 'tr3', 'ep1', 'ep2', 'ep3', 'ept', 'g0320', 'g0429', 'g26', 'g27', 'g28', 'g29', 'g30'];
   // 시간대가 바뀌어 연락이 올 때 잠금화면에 뜨는 시각 (30일 대화는 setup30 에서)
   CHATS['2'].clock = '12:47'; CHATS['3'].clock = '22:13';
   CHATS['4'].clock = '07:52'; CHATS['5'].clock = '13:26'; CHATS['6'].clock = '22:58';
@@ -6510,6 +6560,8 @@
       A.day = '5月30日 (周二) · ' + (b === 'refuse' ? '夜晚' : '早上');
       A.clock = b === 'refuse' ? '22:50' : '07:40';
       A.notify = A.steps[0] || '...';
+      var N = CHATS['an30'];   // 안: 단톡방이 열리는 시간대에 맞춤 (거절 갈래는 밤)
+      N.day = '5月30日 (周二) · ' + (b === 'refuse' ? '夜晚' : '下午'); N.clock = b === 'refuse' ? '23:02' : '16:40';
       // 이미 받은 대화는 그때 내용 그대로 (밤에 마음을 바꿔도 아침에 읽은 대화가 바뀌지 않게)
       F.steps = FUTABA30[st.f30v || (e === 'accept' ? 'accept' : 'happy')];
       F.after = first30() === 'a30' ? 'a30' : null; F.afterDelay = 6000;
@@ -6818,7 +6870,7 @@
     }
     // 대화 상대 (CHATS 의 who). 인물을 더 늘릴 땐 여기에 추가
     var PEOPLE = { ryuji: { name: '龙司', pic: 'ryuji-pic' }, futaba: { name: '双叶', pic: 'futaba-pic' },
-                   yusuke: { name: '祐介', pic: 'yusuke-pic' }, sumire: { name: '芳泽', pic: 'sumire-pic' }, haru: { name: '春', pic: 'haru-pic' },
+                   yusuke: { name: '祐介', pic: 'yusuke-pic' }, sumire: { name: '芳泽', pic: 'sumire-pic' }, makoto: { name: '真', pic: 'makoto-pic' }, ann: { name: '杏', pic: 'ann-pic' }, haru: { name: '春', pic: 'haru-pic' },
                    unknown: { name: '???', pic: 'unknown-pic' },   // 저장되지 않은 상대
                    group: { name: '怪盗团', pic: 'group-pic', muted: true } };   // 단톡방 (알림 꺼 둠)
     saveContact();   // 진엔딩 뒤엔 '아케치'
@@ -6954,7 +7006,7 @@
       persist(); refreshFab();
     }
     function prepDone(list) {
-      var P = { '1': [0, 0, 2], '2': [0, 0, 0], '3': [0, 0], '4': [0], '5': [0], 'y27': [0], '6': [0, 0], 'su28': [0], '7': [0], '8': [0, 0] };
+      var P = { '1': [0, 0, 2], '2': [0, 0, 0], '3': [0, 0], '4': [0], '5': [0], 'y27': [0], '6': [0, 0], 'su28': [0], 'mk28': [0], '7': [0], '8': [0, 0] };
       st.unlocked = list.slice(); st.quotes = {}; st.days = {}; st.lines29 = {};
       CHAT_ORDER.forEach(function (c) { st.picks[c] = []; st.shown[c] = 0; });
       list.forEach(function (c) { st.picks[c] = (P[c] || []).slice(); st.shown[c] = flatten(c).msgs.length; });
@@ -6988,7 +7040,9 @@
     CHATS['6'].gate = function () { return !CHATS['y27'].gate() || isDone('y27'); };
     // 5/28 스미레 → 밤 ???, 5/29 하루 (그날에만)
     CHATS['su28'].gate = function () { return DAY === 28 && st.unlocked.indexOf('8') < 0; };
-    CHATS['8'].gate = function () { return !CHATS['su28'].gate() || isDone('su28'); };
+    CHATS['mk28'].gate = function () { return DAY === 28 && st.unlocked.indexOf('8') < 0; };
+    CHATS['8'].gate = function () { return !CHATS['su28'].gate() || (isDone('su28') && isDone('mk28')); };
+    CHATS['an30'].gate = function () { return DAY === 30 && !finaleStage() && !endingSeen(); };
     CHATS['ha29'].gate = function () { return DAY === 29; };
     // 테스트용: 5/25 류지 대화를 끝낸 상태로 맞춤 (pick = 마지막 선택 0·1·2), 26일 이후 대화는 처음으로
     function prepWarp(pick) {
@@ -7268,10 +7322,24 @@
     var notiWho = 'ryuji';
     // after 가 있는 대화: 앞 대화를 끝까지 보고 목록으로 나오거나 앱을 닫으면, 잠시 뒤 연락이 옴
     var afterTimers = {};
+    // 친구의 연락(사이트 알림)이 곧 오거나, 와 있는데 아직 안 읽었으면 휴대폰을 내려놓지 않음
+    function noteDue() {
+      return CHAT_ORDER.some(function (cid) {
+        var c = CHATS[cid];
+        if (!c.noLock) return false;
+        if (st.unlocked.indexOf(cid) > -1) return !chatDone(cid);
+        if (c.gate && !c.gate()) return false;
+        var a = c.after;
+        if (a === 'u29') a = any29();
+        if (a === 'g30at') a = st.unlocked.indexOf('g30') > -1 ? groupAt(30) : null;
+        return !!a && st.unlocked.indexOf(a) > -1 && chatDone(a);
+      });
+    }
     function checkAfter(delay) {
       CHAT_ORDER.forEach(function (cid) {
         var a = CHATS[cid].after;
         if (a === 'u29') a = any29();
+        if (a === 'g30at') a = st.unlocked.indexOf('g30') > -1 ? groupAt(30) : null;   // 그날 단톡방이 열린 뒤
         if (!a || afterTimers[cid] || st.unlocked.indexOf(cid) > -1) return;
         if (CHATS[cid].gate && !CHATS[cid].gate()) return;
         if (st.unlocked.indexOf(a) < 0 || !chatDone(a)) return;
@@ -7511,7 +7579,7 @@
                preview: latest ? lastText(latest) : '' };
     }
     return { onDialog: onDialog, boot: boot, open: open, close: close, test: test, info: info, back: back, isOpen: function () { return isOpen; },
-             asked: asked, asking: asking, afterStart: afterStart, epiCheck: epiCheck, saveContact: saveContact, warpReady: warpReady, prepWarp: prepWarp, prepDay26: prepDay26, prepDone: prepDone, isDone: isDone, chosen: chosen, has: has, quoteOf: quoteOf,
+             asked: asked, asking: asking, afterStart: afterStart, epiCheck: epiCheck, noteDue: noteDue, saveContact: saveContact, warpReady: warpReady, prepWarp: prepWarp, prepDay26: prepDay26, prepDone: prepDone, isDone: isDone, chosen: chosen, has: has, quoteOf: quoteOf,
              unlock: unlock, pickOf: pickOf, onComment: onComment, skip29: skip29, any29: any29, KEY: KEY_IM,
              base30: base30, ending30: ending30, last30: last30, start30: start30, prep29: prep29,
              dayStart: dayStart, latestClock: latestClock, nextSkip: nextSkip, clockOf: clockOf };
@@ -8493,6 +8561,7 @@
     function busy() { return Lock.isOpen() || Night.busy() || Warp.busy() || Bed.isOpen() || Finale.busy(); }
     function kind() {
       if (IM.asking()) return '';                     // [의뢰에 관해 묻기] 대화 도중엔 내려놓지 않음
+      if (IM.noteDue()) return '';                    // 친구의 연락이 오는 중 · 안 읽음
       if (DAY === 30 && endingSeen()) return '';
       if (DAY === 30 && finaleStage() === '603') return IM.isDone('e603') ? 'night' : IM.nextSkip() ? 'day' : '';
       if (IM.warpReady()) return 'night';
@@ -9029,7 +9098,7 @@
   // /day30 = 애매한 답장(??? 가 다시 물음) · /day30a 수락 · /day30r 거절 · /day30s 지나침
   // /true = 진엔딩을 본 직후 상태로 (잠시 뒤 아케치에게서 문자)
   function dayTest(n, v, afterTrue) {
-    var done = { 26: ['1', '2', '3'], 27: ['1', '2', '3'], 28: ['1', '2', '3', '4', '5', 'y27', '6'], 29: ['1', '2', '3', '4', '5', 'y27', '6', '7', 'su28', '8'], 30: ['1', '2', '3', '4', '5', 'y27', '6', '7', 'su28', '8'] }[n];
+    var done = { 26: ['1', '2', '3'], 27: ['1', '2', '3'], 28: ['1', '2', '3', '4', '5', 'y27', '6'], 29: ['1', '2', '3', '4', '5', 'y27', '6', '7', 'su28', 'mk28', '8'], 30: ['1', '2', '3', '4', '5', 'y27', '6', '7', 'su28', 'mk28', '8'] }[n];
     if (!done) return;
     IM.prepDone(done);
     if (n === 30) IM.prep29(v);
