@@ -3,6 +3,10 @@
     {
       "source": "/warp",
       "destination": "/index.html"
+    },
+    {
+      "source": "/zh/warp",
+      "destination": "/zh/index.html"
     }
   ],
   "headers": [
